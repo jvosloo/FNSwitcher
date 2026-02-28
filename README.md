@@ -12,14 +12,21 @@ When a configured app (e.g., IntelliJ IDEA) is in the foreground, F1–F12 act a
 
 The IOKit `HIDFKeyMode` API used for toggling has been available since at least macOS 10.x and is confirmed working on Tahoe. It should work on Sonoma (14) and Sequoia (15) as well, but these have not been tested. If Apple removes this IOKit interface in a future release, the app will need updating.
 
-## Requirements
+## Install
 
-- macOS 14 (Sonoma) or later
-- Xcode (for building)
+Download `FNSwitcher.zip` from the [latest release](https://github.com/jvosloo/FNSwitcher/releases), unzip, and drag `FNSwitcher.app` to `/Applications`.
 
-## Build & Run
+On first launch, right-click the app → **Open** to bypass the Gatekeeper warning (the app is not notarized).
+
+## Build from Source
+
+Requires macOS 14+ and Xcode.
 
 ```bash
+# Build and create .app bundle
+./scripts/build-app.sh
+
+# Or build and run directly
 cd FNSwitcher
 swift build -c release
 .build/release/FNSwitcher

@@ -19,5 +19,8 @@ DerivedData/
 # Claude Code
 .claude/
 
+# Build output
+dist/
+
 # Design docs (local only)
 docs/
