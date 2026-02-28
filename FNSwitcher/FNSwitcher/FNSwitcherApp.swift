@@ -29,6 +29,7 @@ struct RunningAppInfo: Identifiable, Sendable {
 struct MenuBarView: View {
     @Bindable var configStore: ConfigStore
     @State private var runningApps: [RunningAppInfo] = []
+    @State private var launchAtLogin = SMAppService.mainApp.status == .enabled
 
     var body: some View {
         Toggle("Enabled", isOn: $configStore.isEnabled)
@@ -69,9 +70,8 @@ struct MenuBarView: View {
 
         Divider()
 
-        Toggle("Launch at Login", isOn: Binding(
-            get: { SMAppService.mainApp.status == .enabled },
-            set: { newValue in
+        Toggle("Launch at Login", isOn: $launchAtLogin)
+            .onChange(of: launchAtLogin) { _, newValue in
                 do {
                     if newValue {
                         try SMAppService.mainApp.register()
@@ -80,9 +80,9 @@ struct MenuBarView: View {
                     }
                 } catch {
                     print("Failed to toggle launch at login: \(error)")
+                    launchAtLogin = !newValue
                 }
             }
-        ))
 
         Divider()
 
