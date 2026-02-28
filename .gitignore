@@ -1,0 +1,23 @@
+# Swift Package Manager
+.build/
+.swiftpm/
+Package.resolved
+
+# Xcode
+*.xcodeproj/
+*.xcworkspace/
+xcuserdata/
+DerivedData/
+
+# IntelliJ / JetBrains
+.idea/
+*.iml
+
+# macOS
+.DS_Store
+
+# Claude Code
+.claude/
+
+# Design docs (local only)
+docs/
