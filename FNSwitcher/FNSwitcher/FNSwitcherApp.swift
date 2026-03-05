@@ -47,12 +47,14 @@ struct MenuBarView: View {
         }
 
         Menu("Add App...") {
-            ForEach(runningApps) { app in
+            let configuredBundleIds = Set(configStore.entries.map(\.bundleId))
+            let availableApps = runningApps.filter { !configuredBundleIds.contains($0.bundleId) }
+            ForEach(availableApps) { app in
                 Button(app.name) {
                     configStore.addApp(name: app.name, bundleId: app.bundleId)
                 }
             }
-            if runningApps.isEmpty {
+            if availableApps.isEmpty {
                 Text("No apps detected")
             }
         }
@@ -93,13 +95,11 @@ struct MenuBarView: View {
     }
 
     private func refreshRunningApps() {
-        let configuredBundleIds = Set(configStore.entries.map(\.bundleId))
         runningApps = NSWorkspace.shared.runningApplications
             .filter { $0.activationPolicy == .regular }
             .compactMap { app in
                 guard let name = app.localizedName,
-                      let bundleId = app.bundleIdentifier,
-                      !configuredBundleIds.contains(bundleId) else {
+                      let bundleId = app.bundleIdentifier else {
                     return nil
                 }
                 return RunningAppInfo(name: name, bundleId: bundleId)
